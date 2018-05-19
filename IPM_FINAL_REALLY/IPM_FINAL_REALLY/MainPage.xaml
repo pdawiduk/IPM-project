@@ -9,6 +9,8 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <TextBlock HorizontalAlignment="Left" Margin="566,159,0,0" Text="Średnie Kursy Walut" TextWrapping="Wrap" VerticalAlignment="Top" SelectionChanged="TextBlock_SelectionChanged" FontSize="48"/>
-        <ListView HorizontalAlignment="Left" Height="635" Margin="85,296,0,0" VerticalAlignment="Top" Width="244"/>
+        <ListView HorizontalAlignment="Left" Height="635" Margin="85,296,0,0" VerticalAlignment="Top" Width="244" SelectionChanged="ListView_SelectionChanged">
+            <ListView Height="100" Width="100"/>
+        </ListView>
     </Grid>
 </Page>

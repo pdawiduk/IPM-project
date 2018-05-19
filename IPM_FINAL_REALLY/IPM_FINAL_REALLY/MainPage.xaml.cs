@@ -1,8 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Runtime.Serialization.Json;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -23,17 +28,50 @@ namespace IPM_FINAL_REALLY
     public sealed partial class MainPage : Page
     {
 
-        private void getDataFromServer() {
+        static HttpClient client = new HttpClient();
+        static async Task<List<Rate>> GetCurrencyAsync()
+        {
 
+            List<MainRate> tmp = null;
 
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+            HttpResponseMessage respones = await client.GetAsync("http://api.nbp.pl/api/exchangerates/tables/A/?format=json");
+
+            if (respones.IsSuccessStatusCode)
+            {
+
+                string x = await respones.Content.ReadAsStringAsync();
+                try
+                {
+                    tmp = JsonConvert.DeserializeObject<List<MainRate>>(x);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                }
+               
+            }
+            return new List<Rate>();
         }
         public MainPage()
         {
             this.InitializeComponent();
 
+            GetCurrencyAsync();
 
         }
 
-      
+        private void TextBlock_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
